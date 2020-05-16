@@ -1,9 +1,8 @@
-import options,streams,struct,typetraits
+import options,streams,struct,typetraits,sequtils,typeinfo
 export streams
 type BufferEncoding = distinct string
 type Buffer* = ref object of StringStream
   poolSize*:int  ## This is the number of bytes used to determine the size of pre-allocated, internal Buffer instances used for pooling. This value may be modified.
-
 
 # proc `from`*[T](self:typedesc[Buffer],arrayBuffer:seq[T],byteOffset=none(int),length=none(int)): Buffer 
 #   ## When passed a reference to the .buffer property of a TypedArray instance,
@@ -13,23 +12,30 @@ type Buffer* = ref object of StringStream
 #   ## @param arrayBuffer The .buffer property of any TypedArray or a new ArrayBuffer()
 
 
-# proc `from`*(self:typedesc[Buffer],data:seq[uint8]): Buffer 
-#   ## Creates a new Buffer using the passed {data}
-#   ## @param data data to create a new Buffer
-
+proc `from`*(self:typedesc[Buffer],data:openarray[SomeInteger]): Buffer = 
+  ## Creates a new Buffer using the passed {data}
+  ## @param data data to create a new Buffer
+  result = cast[Buffer](newStringStream())
+  for x in data:
+    result.write x.uint8
+  result.setPosition 0
 
 # # proc `from`*(self:typedesc[Buffer],data:seq[uint8]): Buffer 
 
-# proc `from`*[T](self:typedesc[Buffer],obj:T,byteOffset=none(int),length=none(int)): Buffer 
+# proc `from`*[T](self:typedesc[Buffer],obj:T,byteOffset=none(int),length=none(int)): Buffer =
 #   ## Creates a new buffer containing the coerced value of an object
 #   ## A `TypeError` will be thrown if {obj} has not mentioned methods or is not of other type appropriate for `Buffer.from()` variants.
 #   ## @param obj An object supporting `Symbol.toPrimitive` or `valueOf()`.
+#   result = cast[Buffer](newStringStream())
+#   result.write obj
+#   result.setPosition 0
 
-
-# # proc `from`*(self:typedesc[Buffer],str:string,encoding=none(BufferEncoding)): Buffer 
-# #   ## Creates a new Buffer containing the given JavaScript string {str}.
-# #   ## If provided, the {encoding} parameter identifies the character encoding.
-# #   ## If not provided, {encoding} defaults to 'utf8'.
+proc `from`*(self:typedesc[Buffer],str:string,encoding=none(BufferEncoding)): Buffer =
+  ## Creates a new Buffer containing the given JavaScript string {str}.
+  ## If provided, the {encoding} parameter identifies the character encoding.
+  ## If not provided, {encoding} defaults to 'utf8'.
+  result = cast[Buffer](newStringStream(str))
+  result.setPosition 0
 
 
 # proc `of`*(self:typedesc[Buffer],items:seq[int]): Buffer 
@@ -76,6 +82,7 @@ proc alloc*(self:typedesc[Buffer],size:int,fill = none(string)): Buffer =
   ## If parameter is omitted, buffer will be filled with zeros.
   ## @param encoding encoding used for call to buf.fill while initalizing
   result = cast[Buffer](newStringStream())
+
   var i = 0
   var init = newStringOfCap(size)
   let hasFill = fill.isSome
