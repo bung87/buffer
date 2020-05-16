@@ -296,13 +296,13 @@ proc writeUInt8*(self:Buffer,value:int,offset=none(int)): int {.discardable.} =
   self.write value.uint8
   sizeof(value.uint8)
 
-proc writeUInt16LE*(self:Buffer,value:int,offset=none(int)): int  {.discardable.}=
+proc writeUInt16LE*(self:Buffer,value:int,offset=none(int)): int {.discardable.}=
   if offset.isSome():
     self.setPosition(offset.get())
   self.write extract_16(value.uint16,littleEndian)
   sizeof(value.uint16)
 
-proc writeUInt16BE*(self:Buffer,value:int,offset=none(int)): int =
+proc writeUInt16BE*(self:Buffer,value:int,offset=none(int)): int {.discardable.}=
   if offset.isSome():
     self.setPosition(offset.get())
   self.write extract_16(value.uint16, bigEndian)
@@ -314,7 +314,7 @@ proc writeUInt32LE*(self:Buffer,value:int,offset=none(int)): int {.discardable.}
   self.write extract_32(value.uint32,littleEndian)
   sizeof(value.uint32)
 
-proc writeUInt32BE*(self:Buffer,value:int,offset=none(int)): int  {.discardable.}=
+proc writeUInt32BE*(self:Buffer,value:int,offset=none(int)): int {.discardable.}=
   if offset.isSome():
     self.setPosition(offset.get())
   self.write extract_32(value.uint32,bigEndian)
@@ -344,7 +344,7 @@ proc writeInt32LE*(self:Buffer,value:int,offset=none(int)): int {.discardable.}=
   self.write extract_32(value.int32,littleEndian)
   sizeof(value.int32)
 
-proc writeInt32BE*(self:Buffer,value:int,offset=none(int)): int  {.discardable.}=
+proc writeInt32BE*(self:Buffer,value:int,offset=none(int)): int {.discardable.}=
   if offset.isSome():
     self.setPosition(offset.get())
   self.write extract_32(value.int32,bigEndian)
@@ -357,19 +357,19 @@ proc writeFloatLE*(self:Buffer,value:float32,offset=none(int)): int {.discardabl
   self.setPosition(0)
   sizeof(value.float32)
 
-proc writeFloatBE*(self:Buffer,value:float32,offset=none(int)): int  {.discardable.}=
+proc writeFloatBE*(self:Buffer,value:float32,offset=none(int)): int {.discardable.}=
   if offset.isSome():
     self.setPosition(offset.get())
   self.write extract_32(value.float32,bigEndian)
   sizeof(value.float32)
 
-proc writeDoubleLE*(self:Buffer,value:cdouble,offset=none(int)): int  {.discardable.}=
+proc writeDoubleLE*(self:Buffer,value:cdouble,offset=none(int)): int {.discardable.}=
   if offset.isSome():
     self.setPosition(offset.get())
   self.write extract_64(value.cdouble,littleEndian)
   sizeof(value.cdouble)
 
-proc writeDoubleBE*(self:Buffer,value:cdouble,offset=none(int)): int  {.discardable.}=
+proc writeDoubleBE*(self:Buffer,value:cdouble,offset=none(int)): int {.discardable.}=
   if offset.isSome():
     self.setPosition(offset.get())
   self.write extract_64(value.cdouble,bigEndian)
