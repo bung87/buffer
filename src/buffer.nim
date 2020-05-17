@@ -75,7 +75,7 @@ proc `from`*(self:typedesc[Buffer],str:string,encoding=none(BufferEncoding)): Bu
 #   ## The same as buf1.compare(buf2).
 
 # encoding=none(BufferEncoding)
-proc alloc*(self:typedesc[Buffer],size:int,fill = none(string)): Buffer =
+proc newBuffer*(size:int,fill = none(string)): Buffer =
   ## Allocates a new buffer of {size} octets.
   ## @param size count of octets to allocate.
   ## @param fill if specified, buffer will be initialized by calling buf.fill(fill).

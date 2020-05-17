@@ -1,5 +1,5 @@
 import unittest
-import options
+
 import buffer
 
 suite "from":
