@@ -381,7 +381,11 @@ proc writeDoubleBE*(self:Buffer,value:cdouble,offset=none(int)): int {.discardab
     self.setPosition(offset.get())
   self.write extract_64(value.cdouble,bigEndian)
   sizeof(value.cdouble)
-  
+
+proc `[]=`*[I: Ordinal;T:char|uint8|byte](self: var Buffer; i: I;x: T) =
+  self.data[i] = x.char
+
+proc `[]`*[I: Ordinal;](self: Buffer; i: I): char = self.data[i]
 # proc fill*[T](self:Buffer,value:T,offset=none(int),`end`=none(int),encoding=none(BufferEncoding)): auto 
 
 # proc indexOf*[T](self:Buffer,value:T,byteOffset=none(int),encoding=none(BufferEncoding)): int 
